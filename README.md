@@ -1,6 +1,6 @@
 ## Functional Conservation of DNA Elements (FUNCODE)
 
-Scripts for computing FUNCODE scores from ENCODE DNase-seq, ATAC-seq and Histoen ChIP-seq data.
+Scripts for computing FUNCODE scores from ENCODE DNase-seq, ATAC-seq and Histone ChIP-seq data.
 
 ### UCSC Browser track hubs:
 [hg38](https://genome.ucsc.edu/cgi-bin/hgTracks?hubUrl=https://raw.githubusercontent.com/wefang/funcode/main/track_hubs/hub/hub.txt&genome=hg38&position=chr14:53920000-53990000)
