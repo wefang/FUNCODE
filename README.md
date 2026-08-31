@@ -2,6 +2,8 @@
 
 Scripts for computing FUNCODE scores from ENCODE DNase-seq, ATAC-seq and Histone ChIP-seq data.
 
+Preprint: https://www.biorxiv.org/content/10.1101/2024.10.31.620766v1
+
 ### UCSC Browser track hubs:
 [hg38](https://genome.ucsc.edu/cgi-bin/hgTracks?hubUrl=https://raw.githubusercontent.com/wefang/funcode/main/track_hubs/hub/hub.txt&genome=hg38&position=chr14:53920000-53990000)
 [mm10](https://genome.ucsc.edu/cgi-bin/hgTracks?hubUrl=https://raw.githubusercontent.com/wefang/funcode/main/track_hubs/hub/hub.txt&genome=mm10&position=chr14:46352000-46422000)
