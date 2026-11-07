@@ -16,6 +16,12 @@ align3 = readRDS('./shinyapp/data/align3.rds')
 align = bind_rows(list(align1, align2, align3))
 rm(align1, align2, align3)
 unalign = readRDS('./shinyapp/data/unalign.rds')
+# GH-CO-B: significant pairs, appended so each row carries a GH-CO-V or a GH-CO-B score
+ghcob = readRDS('./shinyapp/data/unalign_ghcob.rds')
+unalign = bind_rows(unalign, ghcob)
+unalign_human = c(unalign_human, GRanges(ghcob$human_chromosome, IRanges(ghcob$human_start, ghcob$human_end), index_id = ghcob$index_id))
+unalign_mouse = c(unalign_mouse, GRanges(ghcob$mouse_chromosome, IRanges(ghcob$mouse_start, ghcob$mouse_end), index_id = ghcob$index_id))
+rm(ghcob)
 
 
 find_align <- function(gr, mapinfo){
@@ -59,7 +65,7 @@ find_un_align <- function(gr, mapinfo){
     result$hg38_region = paste0(result$human_chromosome,':', result$human_start,'-',result$human_end)
     result$mm10_region = paste0(result$mouse_chromosome,':', result$mouse_start,'-',result$mouse_end)
     result = result[,c('input_index', 'input_region','overlap_width','human_dhs_id','hg38_region','human_symbol', 'mouse_dhs_id','mm10_region','mouse_symbol', 
-                       'modality','cov','cov_fdr','shared_motif')]
+                       'modality','cov','cov_fdr','shared_motif','cob','cob_fdr')]
     return(result)
   }
 }
@@ -112,8 +118,9 @@ ui <- fluidPage(
                  fluidRow(
                    column(1,selectInput("index2","Index:",'')),
                    column(3,selectInput("moda2","Modality:",'')),
-                   column(3, textInput('range2','Set the range of COV:')),
-                   column(3, textInput('range2.fdr','Set the range of FDR:'))),
+                   column(2, textInput('range2','Set the range of COV:')),
+                   column(2, textInput('range2.cob','Set the range of COB:')),
+                   column(2, textInput('range2.fdr','Set the range of FDR:'))),
                  uiOutput('content2'))
       ),
       #change content of FAQ
@@ -240,21 +247,26 @@ server <- function(input, output, session){
             if (input$moda2 != "All") {
               data2 <- data2[data2$modality == input$moda2,]}
             
-            default.min = round(as.numeric(min(na.omit(data2[,11]))),3)
-            default.max = round(as.numeric(max(na.omit(data2[,11]))),3)
-            default.fdr.min = round(as.numeric(min(na.omit(data2[,12]))),3)
-            default.fdr.max = round(as.numeric(max(na.omit(data2[,12]))),3)
-            updateTextInput(session, 'range2', placeholder = paste0(default.min,'-',default.max))
-            updateTextInput(session, 'range2.fdr', placeholder = paste0(default.fdr.min,'-',default.fdr.max))
-            
-            if (input$range2 != ''){
-              min2 = as.numeric(strsplit(input$range2, '-', fixed = TRUE)[[1]][1])
-              max2 = as.numeric(strsplit(input$range2, '-', fixed = TRUE)[[1]][2])
-              min2.fdr = as.numeric(strsplit(input$range2, '-', fixed = TRUE)[[1]][1])
-              max2.fdr = as.numeric(strsplit(input$range2, '-', fixed = TRUE)[[1]][2])
-              data2 = data2[(data2[,11] >= min2) &(data2[,11] <= max2),]
-              data2 = data2[(data2[,12] >= min2.fdr) &(data2[,12] <= max2.fdr),]
+            # a row has a GH-CO-V or a GH-CO-B score, so ranges skip the NA of the other one
+            row.fdr = ifelse(is.na(data2$cov_fdr), data2$cob_fdr, data2$cov_fdr)
+            span = function(x){
+              x = na.omit(as.numeric(x))
+              if(length(x) == 0) return('')
+              paste0(round(min(x),3),'-',round(max(x),3))
             }
+            updateTextInput(session, 'range2', placeholder = span(data2$cov))
+            updateTextInput(session, 'range2.cob', placeholder = span(data2$cob))
+            updateTextInput(session, 'range2.fdr', placeholder = span(row.fdr))
+
+            in.range = function(x, range){
+              lim = as.numeric(strsplit(range, '-', fixed = TRUE)[[1]])
+              !is.na(x) & x >= lim[1] & x <= lim[2]
+            }
+            keep = rep(TRUE, nrow(data2))
+            if (input$range2 != '') keep = keep & in.range(data2$cov, input$range2)
+            if (input$range2.cob != '') keep = keep & in.range(data2$cob, input$range2.cob)
+            if (input$range2.fdr != '') keep = keep & in.range(row.fdr, input$range2.fdr)
+            data2 = data2[keep,]
             DT::datatable(data2, options = list(scrollX = TRUE))
           })
           DT::dataTableOutput("show2")

@@ -6,7 +6,7 @@ type bigWig
 visibility full
 allButtonPair on
 centerLabelsDense on
-subGroup1 score_type ScoreType cov=CO-V cob=CO-B ghcov=GH-CO-V
+subGroup1 score_type ScoreType cov=CO-V cob=CO-B ghcov=GH-CO-V ghcob=GH-CO-B
 subGroup2 data_type DataType ca=Chromatin_Accessibility h3k27ac=H3K27ac h3k4me1=H3K4me1 h3k4me3=H3K4me3
 dimensionX score_type
 dimensionY data_type
@@ -193,3 +193,63 @@ html description.html
     graphType bar
     maxHeightPixels 50:30:10
     bigDataUrl https://github.com/wefang/funcode/raw/main/track_hubs/data/gh_cov_H3K4me3_hg38.bw
+
+    track gh_cob_ca_hg38
+    parent FUNCODE_hg38
+    type bigWig
+    shortLabel GH-CO-B chromatin accessibility
+    longLabel Gene-Homology Conservation of Baseline Activities (GH-CO-B) score for chromatin accessibility
+    subGroups score_type=ghcob data_type=ca
+    visibility full
+    color 231,41,138
+    windowingFunction mean 
+    autoScale off
+    viewLimits 0:0.9
+    graphType bar
+    maxHeightPixels 50:30:10
+    bigDataUrl https://github.com/wefang/funcode/raw/main/track_hubs/data/gh_cob_chromatin_accessibility_hg38.bw
+
+    track gh_cob_h3k27ac_hg38
+    parent FUNCODE_hg38
+    type bigWig
+    shortLabel GH-CO-B H3K27ac
+    longLabel Gene-Homology Conservation of Baseline Activities (GH-CO-B) score for H3K27ac
+    subGroups score_type=ghcob data_type=h3k27ac
+    visibility full
+    color 231,41,138
+    windowingFunction mean 
+    autoScale off
+    viewLimits 0:0.9
+    graphType bar
+    maxHeightPixels 50:30:10
+    bigDataUrl https://github.com/wefang/funcode/raw/main/track_hubs/data/gh_cob_H3K27ac_hg38.bw
+
+    track gh_cob_h3k4me1_hg38
+    parent FUNCODE_hg38
+    type bigWig
+    shortLabel GH-CO-B H3K4me1
+    longLabel Gene-Homology Conservation of Baseline Activities (GH-CO-B) score for H3K4me1
+    subGroups score_type=ghcob data_type=h3k4me1
+    visibility full
+    color 231,41,138
+    windowingFunction mean 
+    autoScale off
+    viewLimits 0:0.9
+    graphType bar
+    maxHeightPixels 50:30:10
+    bigDataUrl https://github.com/wefang/funcode/raw/main/track_hubs/data/gh_cob_H3K4me1_hg38.bw
+
+    track gh_cob_h3k4me3_hg38
+    parent FUNCODE_hg38
+    type bigWig
+    shortLabel GH-CO-B H3K4me3
+    longLabel Gene-Homology Conservation of Baseline Activities (GH-CO-B) score for H3K4me3
+    subGroups score_type=ghcob data_type=h3k4me3
+    visibility full
+    color 231,41,138
+    windowingFunction mean 
+    autoScale off
+    viewLimits 0:0.9
+    graphType bar
+    maxHeightPixels 50:30:10
+    bigDataUrl https://github.com/wefang/funcode/raw/main/track_hubs/data/gh_cob_H3K4me3_hg38.bw
