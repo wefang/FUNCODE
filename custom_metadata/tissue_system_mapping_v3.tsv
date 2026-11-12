@@ -1,0 +1,232 @@
+biosample_term	species	tissue_system_original	tissue_system	notes
+mesenteric fat pad	human	Adipose	Adipose	NA
+omental fat pad	human	Adipose	Adipose	NA
+BE2C	human	Brain/CNS	Brain/CNS/Eye	Neuroblastoma cell line
+SK-N-DZ	human	Brain/CNS	Brain/CNS/Eye	Neuroblastoma cell line
+SK-N-MC	human	Brain/CNS	Brain/CNS/Eye	Neuroblastoma cell line
+SK-N-SH	human	Brain/CNS	Brain/CNS/Eye	Neuroblastoma cell line
+astrocyte	human	Brain/CNS	Brain/CNS/Eye	NA
+brain	human	Brain/CNS	Brain/CNS/Eye	NA
+cerebellum	human	Brain/CNS	Brain/CNS/Eye	NA
+choroid plexus epithelial cell	human	Brain/CNS	Brain/CNS/Eye	NA
+ecto neural progenitor cell	human	Brain/CNS	Brain/CNS/Eye	NA
+head of caudate nucleus	human	Brain/CNS	Brain/CNS/Eye	NA
+middle frontal area 46	human	Brain/CNS	Brain/CNS/Eye	Prefrontal cortex
+neural crest cell	human	Brain/CNS	Brain/CNS/Eye	NA
+neural progenitor cell	human	Brain/CNS	Brain/CNS/Eye	NA
+posterior cingulate cortex	human	Brain/CNS	Brain/CNS/Eye	NA
+posterior cingulate gyrus	human	Brain/CNS	Brain/CNS/Eye	NA
+putamen	human	Brain/CNS	Brain/CNS/Eye	Basal ganglia
+Ammon's horn	human	Brain/CNS	Brain/CNS/Eye	Hippocampus region
+D341Med	human	Brain/CNS	Brain/CNS/Eye	Medulloblastoma cell line
+D721Med	human	Brain/CNS	Brain/CNS/Eye	Medulloblastoma cell line
+M059J	human	Brain/CNS	Brain/CNS/Eye	Glioblastoma cell line
+spinal cord	human	Brain/CNS	Brain/CNS/Eye	NA
+WERI-Rb-1	human	Brain/CNS	Brain/CNS/Eye	Retinoblastoma cell line (neural origin)
+fibroblast of gingiva	human	Connective/Fibroblast	Connective/Fibroblast	NA
+fibroblast of lung	human	Connective/Fibroblast	Connective/Fibroblast	NA
+fibroblast of skin of back	human	Connective/Fibroblast	Connective/Fibroblast	NA
+fibroblast of skin of left biceps	human	Connective/Fibroblast	Connective/Fibroblast	NA
+fibroblast of skin of left quadriceps	human	Connective/Fibroblast	Connective/Fibroblast	NA
+fibroblast of the aortic adventitia	human	Connective/Fibroblast	Connective/Fibroblast	NA
+AG10803	human	Connective/Fibroblast	Connective/Fibroblast	Skin fibroblast cell line
+GM04503	human	Connective/Fibroblast	Connective/Fibroblast	Skin fibroblast cell line
+HFFc6	human	Connective/Fibroblast	Connective/Fibroblast	Human foreskin fibroblast cell line
+colonic mucosa	human	Digestive	Digestive	NA
+epithelial cell of esophagus	human	Digestive	Digestive	NA
+esophagus mucosa	human	Digestive	Digestive	NA
+gastroesophageal sphincter	human	Digestive	Digestive	NA
+large intestine	human	Digestive	Digestive	NA
+left colon	human	Digestive	Digestive	NA
+mucosa of descending colon	human	Digestive	Digestive	NA
+mucosa of gallbladder	human	Digestive	Digestive	NA
+sigmoid colon	human	Digestive	Digestive	NA
+small intestine	human	Digestive	Digestive	NA
+stomach	human	Digestive	Digestive	NA
+transverse colon	human	Digestive	Digestive	NA
+LoVo	human	Digestive	Digestive	Colorectal adenocarcinoma cell line
+H1	human	Embryonic/Stem	Embryonic/Stem	hESC
+iPS DF 19.11	human	Embryonic/Stem	Embryonic/Stem	iPSC
+iPS DF 19.7	human	Embryonic/Stem	Embryonic/Stem	iPSC
+WTC11	human	Embryonic/Stem	Embryonic/Stem	iPSC
+epithelial cell of proximal tubule	human	Kidney	Kidney	Kidney epithelium
+suprapubic skin	human	Epithelial	Epithelial	Skin
+eye	human	Eye	Brain/CNS/Eye	NA
+non-pigmented ciliary epithelial cell	human	Eye	Brain/CNS/Eye	NA
+retina	human	Eye	Brain/CNS/Eye	NA
+Peyer's patch	human	Immune/Blood	Immune/Blood	Gut-associated lymphoid tissue
+cardiac fibroblast	human	Heart	Heart	NA
+cardiac muscle cell	human	Heart	Heart	NA
+heart	human	Heart	Heart	NA
+heart left ventricle	human	Heart	Heart	NA
+heart right ventricle	human	Heart	Heart	NA
+left cardiac atrium	human	Heart	Heart	NA
+Right ventricle myocardium inferior	human	Heart	Heart	NA
+B cell	human	Immune/Blood	Immune/Blood	NA
+CD14-positive monocyte	human	Immune/Blood	Immune/Blood	NA
+CD4-positive naive resting alpha-beta T cell	human	Immune/Blood	Immune/Blood	NA
+CD4-positive, alpha-beta T cell	human	Immune/Blood	Immune/Blood	NA
+CD4-positive, alpha-beta memory T cell	human	Immune/Blood	Immune/Blood	NA
+CD8-positive naive resting alpha-beta T cell	human	Immune/Blood	Immune/Blood	NA
+CD8-positive, alpha-beta T cell	human	Immune/Blood	Immune/Blood	NA
+CMK	human	Immune/Blood	Immune/Blood	Megakaryoblastic leukemia cell line
+HL-60	human	Immune/Blood	Immune/Blood	Promyelocytic leukemia cell line
+K562	human	Immune/Blood	Immune/Blood	CML cell line
+Karpas-422	human	Immune/Blood	Immune/Blood	B-cell lymphoma cell line
+NB4	human	Immune/Blood	Immune/Blood	APL cell line
+T-cell	human	Immune/Blood	Immune/Blood	NA
+activated CD4-positive, alpha-beta T cell	human	Immune/Blood	Immune/Blood	NA
+activated T-cell	human	Immune/Blood	Immune/Blood	NA
+common myeloid progenitor, CD34-positive	human	Immune/Blood	Immune/Blood	NA
+effector memory CD4-positive, alpha-beta T cell	human	Immune/Blood	Immune/Blood	NA
+hematopoietic multipotent progenitor cell	human	Immune/Blood	Immune/Blood	NA
+inflammatory macrophage	human	Immune/Blood	Immune/Blood	NA
+regulatory T cell	human	Immune/Blood	Immune/Blood	NA
+stromal cell of bone marrow	human	Immune/Blood	Immune/Blood	NA
+suppressor macrophage	human	Immune/Blood	Immune/Blood	NA
+thymus	human	Immune/Blood	Immune/Blood	NA
+DND-41	human	Immune/Blood	Immune/Blood	T-ALL cell line
+EL	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+ELR	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM12864	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM19452	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM21447	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM21529	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM21576	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM21723	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM21825	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM23248	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+GM23338	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+HG02759	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+HG02884	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+HG03460	human	Immune/Blood	Immune/Blood	EBV-transformed B cell line
+HAP-1	human	Immune/Blood	Immune/Blood	CML-derived cell line
+KBM-7	human	Immune/Blood	Immune/Blood	CML cell line
+NCI-H929	human	Immune/Blood	Immune/Blood	Myeloma cell line
+T-helper 2 cell	human	Immune/Blood	Immune/Blood	NA
+T-helper 22 cell	human	Immune/Blood	Immune/Blood	NA
+natural killer cell	human	Immune/Blood	Immune/Blood	NA
+HS-27A	human	Connective/Fibroblast	Connective/Fibroblast	Bone marrow stromal cell line
+kidney	human	Kidney	Kidney	NA
+kidney epithelial cell	human	Kidney	Kidney	NA
+left kidney	human	Kidney	Kidney	NA
+left renal cortex interstitium	human	Kidney	Kidney	NA
+left renal pelvis	human	Kidney	Kidney	NA
+nephron progenitor cell	human	Kidney	Kidney	NA
+renal cortical epithelial cell	human	Kidney	Kidney	NA
+renal cortex interstitium	human	Kidney	Kidney	NA
+renal pelvis	human	Kidney	Kidney	NA
+right kidney	human	Kidney	Kidney	NA
+right renal pelvis	human	Kidney	Kidney	NA
+RCC	human	Kidney	Kidney	Renal cell carcinoma cell line
+RCC 7860	human	Kidney	Kidney	Renal cell carcinoma cell line
+ureter	human	Kidney	Kidney	NA
+foreskin fibroblast	human	Limb/Facial	Limb/Facial	NA
+foreskin keratinocyte	human	Limb/Facial	Limb/Facial	NA
+left forelimb	human	Limb/Facial	Limb/Facial	NA
+left hindlimb	human	Limb/Facial	Limb/Facial	NA
+right forelimb	human	Limb/Facial	Limb/Facial	NA
+right hindlimb	human	Limb/Facial	Limb/Facial	NA
+HepG2	human	Liver	Liver	Hepatocellular carcinoma cell line
+HuH-7	human	Liver	Liver	Hepatocellular carcinoma cell line
+HuH-7.5	human	Liver	Liver	Hepatocellular carcinoma cell line
+liver	human	Liver	Liver	NA
+right lobe of liver	human	Liver	Liver	NA
+fibroblast of pulmonary artery	human	Lung	Lung	NA
+lung	human	Lung	Lung	NA
+A549	human	Lung	Lung	Lung adenocarcinoma cell line
+left lung	human	Lung	Lung	NA
+lower lobe of left lung	human	Lung	Lung	NA
+lower lobe of right lung	human	Lung	Lung	NA
+right lung	human	Lung	Lung	NA
+upper lobe of left lung	human	Lung	Lung	NA
+upper lobe of right lung	human	Lung	Lung	NA
+forelimb muscle	human	Muscle	Muscle	NA
+hindlimb muscle	human	Muscle	Muscle	NA
+muscle of arm	human	Muscle	Muscle	NA
+muscle of back	human	Muscle	Muscle	NA
+muscle of leg	human	Muscle	Muscle	NA
+psoas muscle	human	Muscle	Muscle	NA
+gastrocnemius medialis	human	Muscle	Muscle	Calf muscle
+femur	human	Bone	Bone	NA
+LNCaP clone FGC	human	Reproductive	Reproductive	Prostate cancer cell line
+MCF-7	human	Reproductive	Reproductive	Breast cancer cell line
+T47D	human	Reproductive	Reproductive	Breast cancer cell line
+fibroblast of mammary gland	human	Reproductive	Reproductive	NA
+mammary epithelial cell	human	Reproductive	Reproductive	NA
+ovary	human	Reproductive	Reproductive	NA
+prostate gland	human	Reproductive	Reproductive	NA
+uterus	human	Reproductive	Reproductive	NA
+RWPE2	human	Reproductive	Reproductive	Prostate epithelial cell line
+thyroid gland	human	Thyroid	Thyroid	NA
+adrenal gland	human	Adrenal	Adrenal	NA
+L1-S8	human	Embryonic/Stem	Brain/CNS/Eye	Neural stem cell line
+L1-S8R	human	Embryonic/Stem	Brain/CNS/Eye	Neural stem cell line
+islet precursor cell	human	Pancreas	Pancreas	NA
+posterior vena cava	human	Cardiovascular	Cardiovascular	Blood vessel
+thoracic aorta	human	Cardiovascular	Cardiovascular	Blood vessel
+sciatic nerve	human	Nervous	Nervous	Peripheral nerve
+adipocyte	mouse	Adipose	Adipose	NA
+gonadal fat pad	mouse	Adipose	Adipose	NA
+3T3-L1	mouse	Adipose	Adipose	Preadipocyte cell line
+brain	mouse	Brain/CNS	Brain/CNS/Eye	NA
+cerebellum	mouse	Brain/CNS	Brain/CNS/Eye	NA
+cerebral cortex	mouse	Brain/CNS	Brain/CNS/Eye	NA
+cortex	mouse	Brain/CNS	Brain/CNS/Eye	NA
+forebrain	mouse	Brain/CNS	Brain/CNS/Eye	NA
+frontal cortex	mouse	Brain/CNS	Brain/CNS/Eye	NA
+hindbrain	mouse	Brain/CNS	Brain/CNS/Eye	NA
+midbrain	mouse	Brain/CNS	Brain/CNS/Eye	NA
+neural tube	mouse	Brain/CNS	Brain/CNS/Eye	NA
+telencephalon	mouse	Brain/CNS	Brain/CNS/Eye	NA
+MN1	mouse	Brain/CNS	Brain/CNS/Eye	Neuroblastoma cell line
+NIH3T3	mouse	Connective/Fibroblast	Connective/Fibroblast	NA
+fibroblast of lung	mouse	Connective/Fibroblast	Connective/Fibroblast	NA
+Patski	mouse	Connective/Fibroblast	Connective/Fibroblast	Kidney-derived fibroblast cell line
+intestine	mouse	Digestive	Digestive	NA
+large intestine	mouse	Digestive	Digestive	NA
+stomach	mouse	Digestive	Digestive	NA
+urinary bladder	mouse	Digestive	Digestive	NA
+ES-CJ7	mouse	Embryonic/Stem	Embryonic/Stem	mESC
+ES-E14	mouse	Embryonic/Stem	Embryonic/Stem	mESC
+R1	mouse	Embryonic/Stem	Embryonic/Stem	mESC
+WW6	mouse	Embryonic/Stem	Embryonic/Stem	mESC
+ZHBTc4	mouse	Embryonic/Stem	Embryonic/Stem	mESC
+embryo	mouse	Embryonic/Stem	Embryonic/Stem	Whole embryo
+mesoderm	mouse	Embryonic/Stem	Embryonic/Stem	Germ layer
+Muller cell	mouse	Eye	Brain/CNS/Eye	Retinal glial cell
+retina	mouse	Eye	Brain/CNS/Eye	NA
+heart	mouse	Heart	Heart	NA
+B cell	mouse	Immune/Blood	Immune/Blood	NA
+CD4-positive helper T cell	mouse	Immune/Blood	Immune/Blood	NA
+CD4-positive, CD25-positive, alpha-beta regulatory T cell	mouse	Immune/Blood	Immune/Blood	NA
+activated regulatory T-cells	mouse	Immune/Blood	Immune/Blood	NA
+c-Kit-positive CD71-negative TER-119-negative erythroid progenitor cells	mouse	Immune/Blood	Immune/Blood	NA
+c-Kit-positive CD71-positive TER-119-positive erythroid progenitor cells	mouse	Immune/Blood	Immune/Blood	NA
+common myeloid progenitor	mouse	Immune/Blood	Immune/Blood	NA
+granulocyte monocyte progenitor cell	mouse	Immune/Blood	Immune/Blood	NA
+hematopoietic stem cell	mouse	Immune/Blood	Immune/Blood	NA
+inflammation-experienced regulatory T-cells	mouse	Immune/Blood	Immune/Blood	NA
+megakaryocyte	mouse	Immune/Blood	Immune/Blood	NA
+megakaryocyte progenitor cell	mouse	Immune/Blood	Immune/Blood	NA
+megakaryocyte-erythroid progenitor cell	mouse	Immune/Blood	Immune/Blood	NA
+monocyte	mouse	Immune/Blood	Immune/Blood	NA
+naive thymus-derived CD4-positive, alpha-beta T cell	mouse	Immune/Blood	Immune/Blood	NA
+regulatory T cell	mouse	Immune/Blood	Immune/Blood	NA
+spleen	mouse	Immune/Blood	Immune/Blood	NA
+splenic B cell	mouse	Immune/Blood	Immune/Blood	NA
+thymus	mouse	Immune/Blood	Immune/Blood	NA
+induced T-regulatory cell	mouse	Immune/Blood	Immune/Blood	NA
+A20	mouse	Immune/Blood	Immune/Blood	B cell lymphoma cell line
+416B	mouse	Immune/Blood	Immune/Blood	Myeloid leukemia cell line
+MEL	mouse	Immune/Blood	Immune/Blood	Erythroleukemia cell line
+adrenal gland	mouse	Adrenal	Adrenal	NA
+kidney	mouse	Kidney	Kidney	NA
+embryonic facial prominence	mouse	Limb/Facial	Limb/Facial	NA
+forelimb bud	mouse	Limb/Facial	Limb/Facial	NA
+limb	mouse	Limb/Facial	Limb/Facial	NA
+liver	mouse	Liver	Liver	NA
+lung	mouse	Lung	Lung	NA
+skeletal muscle tissue	mouse	Muscle	Muscle	NA
+gastrocnemius	mouse	Muscle	Muscle	Calf muscle
+yolk sac	mouse	Placenta/Extraembryonic	Placenta/Extraembryonic	NA

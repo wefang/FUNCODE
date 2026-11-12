@@ -15,12 +15,16 @@ kval = 40
 num_features = 48160
 # num_features = 25000
 for (method in c("method1", "method2", "method3", "method4_phyloP4way", "method5_spearman_manual",
-                 "method6_lecif", "method7_percentage")) {
+                 "method6_lecif", "method7_percentage", "method8_human_var", "method9_mouse_var",
+                 "method10_adaliftover_h2m", "method11_adaliftover_m2h")) {
         if (method %in% c("method1", "method2", "method3", "method6_lecif", "method7_percentage")) {
                 data_dir = "E:\\large_data/sciatac_seurat_ren/"
         }
         if (method %in% c("method4_phyloP4way", "method5_spearman_manual")) {
                 data_dir = "E:\\GlobusDownload/Ruzhang_sciatac_integrated_Feb7/"
+        }
+        if (method %in% c("method8_human_var", "method9_mouse_var", "method10_adaliftover_h2m", "method11_adaliftover_m2h")) {
+                data_dir = "/dcs04/hongkai/data/rzhao/sciATAC/mid_data/"
         }
         if (num_features == 25000) {
                 int_obj = readRDS(paste0(data_dir, "integrated_human_mouse_example1_", method, ".rds"))

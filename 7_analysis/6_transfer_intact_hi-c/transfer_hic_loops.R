@@ -198,7 +198,12 @@ for (x in cols_append) {
         pred_compiled[[paste0("anchor1_", x)]] = regions_all[[x]][pred_compiled$dhs1_index]
         pred_compiled[[paste0("anchor2_", x)]] = regions_all[[x]][pred_compiled$dhs2_index]
 }
-readr::write_csv(pred_compiled, "table_s8_intact_pred_compiled.csv")
+# drop self-loops, anchors without a conserved pair, and mouse anchors on different chromosomes
+anchor1_sign = rowSums(as.matrix(pred_compiled[paste0("anchor1_", cols_append[6:13])]))
+anchor2_sign = rowSums(as.matrix(pred_compiled[paste0("anchor2_", cols_append[6:13])]))
+same_chr = str_extract(pred_compiled$anchor1_mm10_region, "^[^:]+") == str_extract(pred_compiled$anchor2_mm10_region, "^[^:]+")
+pred_compiled = pred_compiled[pred_compiled$dhs1_id != pred_compiled$dhs2_id & anchor1_sign > 0 & anchor2_sign > 0 & same_chr, ]
+readr::write_csv(pred_compiled, "table_s10_intact_pred_compiled.csv")
 
 # Filter loops by distance and Motifs for evaluations
 tb_comb1 =  tb_comb %>% filter(dist > 65000) %>%

@@ -57,6 +57,29 @@ score_col = c("cov_chromatin_accessibility" = "#d73027",
               seq_score_col)
 regions_subset = regions[c("id", all_score_chr)]
 
+# add within-species baselines (human mean and variability, zebrafish variability) and AdaLiftOver scores
+baseline_tb = readRDS("./output/chromatin_conservation_v1/CA_species_baselines.rds")
+zf_rpm = readRDS("./output/human_zebrafish/zebrafish_atac_rpm.rds")
+zf_anchors = read_tsv("./output/human_zebrafish/human_zebrafish_anchors.tsv")
+zf_anchors = zf_anchors[zf_anchors$score >= 0.5, ]
+zf_anchor_samples = unique(zf_anchors$zebrafish_sample)
+zf_anchor_mat = as.matrix(zf_rpm[, zf_anchor_samples[zf_anchor_samples %in% colnames(zf_rpm)], drop = F])
+zf_baseline_tb = tibble(id = rownames(zf_anchor_mat),
+                        zebrafish_CA_var_std = calc_var_std_ver1(zf_anchor_mat))
+adaliftover_tb = readRDS("./output/adaliftover/adaliftover_scores.rds")
+regions_combined = readRDS("./output/indexed_dhs_mapped_regions_combined.rds")
+ada_match = match(regions_subset$id, regions_combined$human_id)
+regions_subset$adaliftover_h2m = adaliftover_tb$AdaLiftOver_hg38_to_mm10[ada_match]
+regions_subset$adaliftover_m2h = adaliftover_tb$AdaLiftOver_mm10_to_hg38[ada_match]
+baseline_match = match(regions_subset$id, baseline_tb$id)
+regions_subset$human_CA_mean = baseline_tb$human_CA_mean[baseline_match]
+regions_subset$human_CA_var_std = baseline_tb$human_CA_var_std[baseline_match]
+zf_baseline_match = match(regions_subset$id, zf_baseline_tb$id)
+regions_subset$zebrafish_CA_var_std = zf_baseline_tb$zebrafish_CA_var_std[zf_baseline_match]
+new_score_chr = c("adaliftover_h2m", "adaliftover_m2h",
+                  "human_CA_mean", "human_CA_var_std",
+                  "zebrafish_CA_var_std")
+
 
 # compile zebrafish peaks
 # loop over all tissue collect and construct peak indicator matrix for one modality at a time
@@ -213,6 +236,70 @@ eval_all_mod = bind_rows(map(peak_names, function(cur_peak_name) {
         eval_all
 }))
 saveRDS(eval_all_mod, file = "./output/zebrafish_cov_res1.rds")
+
+# CO-V evaluation of within-species baselines and AdaLiftOver
+human_data_tb = tibble(peak_name = peak_names,
+                       file = c("./intermediate_data/encodev4_human_chromatin_correct.rds",
+                                "./processed_data/histone_norm_correct/Homo_sapiens_H3K27ac_norm_correct.rds",
+                                "./processed_data/histone_norm_correct/Homo_sapiens_H3K4me3_norm_correct.rds"),
+                       sheet = c(1, 3, 2),
+                       cov_score = c("cov_chromatin_accessibility", "cov_H3K27ac", "cov_H3K4me3"))
+eval_new_mod = bind_rows(map(1:nrow(human_data_tb), function(k) {
+        cur_peak_name = human_data_tb$peak_name[k]
+        cov_score = human_data_tb$cov_score[k]
+        human_correct = readRDS(human_data_tb$file[k])
+        if (cur_peak_name != "ATAC.peak") rownames(human_correct) = regions$id
+        human_meta = readxl::read_excel("table_s2_temp1.xlsx", sheet = human_data_tb$sheet[k])
+        human_meta = human_meta[human_meta$Organism == "Homo sapiens", ]
+        tissue_ind_list = map(1:nrow(human_zebrafish_tissue_names), function(i) {
+                human_tissue_name = strsplit(human_zebrafish_tissue_names$...2[i], ";")[[1]]
+                if (cur_peak_name == "ATAC.peak") {
+                        human_meta_sel = human_meta[human_meta$Life.stage %in% c("adult") & human_meta$Tissue.cell.type %in% human_tissue_name & human_meta$Biosample.type %in% c("tissue"), ]
+                } else {
+                        human_meta_sel = human_meta[human_meta$Tissue.cell.type %in% human_tissue_name & human_meta$Biosample.type %in% c("tissue"), ]
+                }
+                which(colnames(human_correct) %in% human_meta_sel$Accession)
+        })
+        tissue_common_ind = which(map_dbl(tissue_ind_list, length) > 0)
+        human_zebrafish_tissue_sel = human_zebrafish_tissue_names[tissue_common_ind, ]
+        human_correct_tissue = do.call(cbind, map(tissue_ind_list[tissue_common_ind], function(human_col_ind) {
+                rowMeans(human_correct[, human_col_ind, drop = F])
+        }))
+        colnames(human_correct_tissue) = human_zebrafish_tissue_sel$...2
+        peak_mat = all_peak_mat[[cur_peak_name]]
+        bind_rows(map(1:nrow(human_zebrafish_tissue_sel), function(i) {
+                zebrafish_tissue_name = human_zebrafish_tissue_sel$...1[i]
+                zebrafish_file = paste0("./processed_data/Zebrafish_YueLab_signal/", zebrafish_tissue_name, ".rds")
+                if (!file.exists(zebrafish_file)) return(NULL)
+                zebrafish_data = left_join(readRDS(zebrafish_file), regions_subset, by = c("dhs.id" = "id"))
+                col_ind = which(colnames(peak_mat) == zebrafish_tissue_name)
+                zebrafish_data$zebrafish_log2fc = rowMeans(log2(1 + peak_mat[, col_ind, drop = F])) - rowMeans(log2(1 + peak_mat[, -col_ind, drop = F]))
+                row_ind = match(zebrafish_data$dhs.id, rownames(human_correct))
+                zebrafish_data$human_log2fc = log2(1 + human_correct_tissue[row_ind, i]) -
+                        rowMeans(log2(1 + human_correct_tissue[row_ind, -i, drop = F]))
+                sim_df = as_tibble(expand.grid(score = new_score_chr,
+                                               min_rank = c(5e3, 10e3, 1.5e4, 2e4, 2.5e4, 5e4)))
+                sim_df = arrange(sim_df, score)
+                sim_df = sim_df[map_dbl(as.character(sim_df$score), function(s) sum(!is.na(zebrafish_data[[s]]))) >= 1000, ]
+                sim_df$value = map_dbl(seq_len(nrow(sim_df)), function(i_sim) {
+                        score_chr = as.character(sim_df$score[i_sim])
+                        zebrafish_fil = zebrafish_data %>%
+                                arrange(desc(!! rlang::sym(score_chr))) %>%
+                                filter(!is.na(!! rlang::sym(cov_score))) %>%
+                                filter(row_number() <= sim_df$min_rank[i_sim])
+                        if (nrow(zebrafish_fil) < 1e3) return(NA)
+                        mean(map_dbl(1:100, function(i) {
+                                sample_indices = sample(nrow(zebrafish_fil), size = 1e3, replace = F)
+                                cor(zebrafish_fil$zebrafish_log2fc[sample_indices],
+                                    zebrafish_fil$human_log2fc[sample_indices], method = "spearman", use = "complete.obs")
+                        }), na.rm = T)
+                })
+                sim_df$tissue = zebrafish_tissue_name
+                filter(sim_df, !is.na(value))
+        })) %>%
+                mutate(modality = cur_peak_name)
+}))
+saveRDS(eval_new_mod, file = "./output/zebrafish_cov_res_new_scores.rds")
 # eval_all_mod = readRDS("./output/zebrafish_cov_res.rds")
 
 filter(eval_all_mod, min_rank == 1000,
@@ -410,10 +497,10 @@ zebrafish_data = left_join(zebrafish_data, regions_subset, by = c("dhs.id" = "id
 eval_all_mod = bind_rows(map(peak_names, function(cur_peak_name) {
         message(cur_peak_name)
         sim_df = as_tibble(expand.grid(
-                score = all_score_chr,
+                score = c(all_score_chr, new_score_chr),
                 min_rank = c(1e3, 2.5e3, 5e3, 10e3, 1.5e4, 2e4, 2.5e4, 5e4)))
         sim_df = arrange(sim_df, score)
-        
+
         peak_mat = all_peak_mat[[cur_peak_name]]
         zebrafish_data$zebrafish_peak_frac = rowMeans(peak_mat > 0)
         

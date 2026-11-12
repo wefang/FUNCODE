@@ -72,6 +72,21 @@ dhs_sel = dhs_common[order(regions$lecif[match(dhs_common, regions$id)], decreas
 # method 7: PSH
 method = "method7_percentage"
 dhs_sel = dhs_common[order(regions$percentage[match(dhs_common, regions$id)], decreasing = T)[1:num_features]]
+# methods 8-11: within-species variability and AdaLiftOver
+baseline_tb = readRDS("./output/chromatin_conservation_v1/CA_species_baselines.rds")
+adaliftover_tb = readRDS("./output/adaliftover/adaliftover_scores.rds")
+regions$human_CA_var_std = baseline_tb$human_CA_var_std[match(regions$id, baseline_tb$id)]
+regions$mouse_CA_var_std = baseline_tb$mouse_CA_var_std[match(regions$id, baseline_tb$id)]
+regions$adaliftover_h2m = adaliftover_tb$AdaLiftOver_hg38_to_mm10[match(1:nrow(regions), adaliftover_tb$human_idx)]
+regions$adaliftover_m2h = adaliftover_tb$AdaLiftOver_mm10_to_hg38[match(1:nrow(regions), adaliftover_tb$human_idx)]
+method = "method8_human_var"
+dhs_sel = dhs_common[order(regions$human_CA_var_std[match(dhs_common, regions$id)], decreasing = T)[1:num_features]]
+method = "method9_mouse_var"
+dhs_sel = dhs_common[order(regions$mouse_CA_var_std[match(dhs_common, regions$id)], decreasing = T)[1:num_features]]
+method = "method10_adaliftover_h2m"
+dhs_sel = dhs_common[order(regions$adaliftover_h2m[match(dhs_common, regions$id)], decreasing = T)[1:num_features]]
+method = "method11_adaliftover_m2h"
+dhs_sel = dhs_common[order(regions$adaliftover_m2h[match(dhs_common, regions$id)], decreasing = T)[1:num_features]]
 # end specifying features for methods
 
 human_mouse_obj = SeuratObject:::merge.Seurat(human_sample_obj[common_features, ], mouse_sample_obj[common_features, ])

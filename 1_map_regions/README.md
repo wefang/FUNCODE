@@ -75,6 +75,15 @@ For human-zebrafish mapping:
 python py/base_run_hg38todanRer10.py
 ```
 
+### Pig Extension
+For human-pig mapping (run from the project root; the single genome-wide `hg38.susScr11.net.axt` from https://hgdownload.soe.ucsc.edu/goldenPath/hg38/vsSusScr11/ is searched on the hg38 side for forward mapping and on the susScr11 side for reverse mapping):
+```bash
+python 1_map_regions/py/base_run_hg38tosusScr11.py
+python 1_map_regions/py/base_run_susScr11tohg38.py
+Rscript 1_map_regions/R/make_region_file_hg38_susScr11.R
+python 1_map_regions/py/two_region_hg38tosusScr11.py
+```
+
 ## Output
 Each mapping produces:
 - Paired coordinates (200bp windows in each species)
@@ -109,9 +118,13 @@ Each mapping produces:
 │   ├── base_run_hg38tomm10.py   # Human → Mouse mapping
 │   ├── base_run_mm10tohg38.py   # Mouse → Human mapping
 │   ├── base_run_hg38todanRer10.py  # Human → Zebrafish mapping
+│   ├── base_run_hg38tosusScr11.py  # Human → Pig mapping
+│   ├── base_run_susScr11tohg38.py  # Pig → Human mapping
 │   ├── two_region_hg38tomm10.py    # Sequence identity (H→M)
-│   └── two_region_mm10tohg38.py    # Sequence identity (M→H)
+│   ├── two_region_mm10tohg38.py    # Sequence identity (M→H)
+│   └── two_region_hg38tosusScr11.py  # Sequence identity (H→P)
 ├── R/
-│   └── make_region_file.R       # Prepare input region files
+│   ├── make_region_file.R       # Prepare input region files
+│   └── make_region_file_hg38_susScr11.R  # Human-pig core set
 └── README.md
 ```

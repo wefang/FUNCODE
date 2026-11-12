@@ -52,6 +52,16 @@ u2 = upset(fromList(cob_sign_list), order.by = "freq")
 script_plot_dir = "./plots_v1/"
 push_pdf(u1, file_name = "upset_cov_wide", w = 7, h = 3)
 push_pdf(u2, file_name = "upset_cob_wide", w = 7, h = 3)
+# Figure S7g-j: add the extended set, pairs of elements
+nonalign_tb = readRDS("./output/nonalign_sign_combined.rds")
+ghcob_tb = readRDS("./output/nonalign_ghcob_motif_shared.rds")$pair_modality_tb
+gh_cov_sign_list = map(split(paste(nonalign_tb$human_id, nonalign_tb$mouse_id, sep = ":"), nonalign_tb$modality), unique)
+gh_cob_sign_list = map(split(paste(ghcob_tb$human_id, ghcob_tb$mouse_id, sep = ":"), ghcob_tb$modality), unique)
+u3 = upset(fromList(gh_cov_sign_list), order.by = "freq")
+u4 = upset(fromList(gh_cob_sign_list), order.by = "freq")
+push_pdf(u3, file_name = "upset_gh_cov_wide", w = 7, h = 3)
+push_pdf(u4, file_name = "upset_gh_cob_wide", w = 7, h = 3)
+map(list(cov = cov_sign_list, cob = cob_sign_list, gh_cov = gh_cov_sign_list, gh_cob = gh_cob_sign_list), lengths)
 
 # Figure 2f: CO-V overlap between modalities
 g1 = regions_all %>% count(cov_chromatin_accessibility_sign, cov_H3K27ac_sign) %>%
@@ -384,3 +394,55 @@ write_tsv(tb_top$`GO Molecular Function`, file = "./output/go_final/cob_mf.tsv")
 write_tsv(tb_top$`GO Biological Process`, file = "./output/go_final/cob_bp.tsv")
 write_tsv(tb_top$`GO Cellular Component`, file = "./output/go_final/cob_cc.tsv")
 saveRDS(tb_top, file = "./output/go_final/cob.rds")
+# Table S5: GREAT GH-CO-B, the GREAT region-level hypergeometric test run locally
+library(org.Hs.eg.db)
+library(GO.db)
+dhs_tb = read_tsv("./metadata/ENCODE_DHS/ENCFF503GCK.tsv", col_types = cols(identifier = "c", .default = "?"))
+dhs_gr = GRanges(dhs_tb$seqname, IRanges(as.integer(dhs_tb$start), as.integer(dhs_tb$end)), identifier = dhs_tb$identifier)
+set.seed(73)
+bg_indices = sample(length(dhs_gr), size = 6e5)
+# GREAT basal plus extension domains, regions assigned by midpoint
+hg38_seqlengths = tryCatch(GenomeInfoDb::seqlengths(GenomeInfoDb::Seqinfo(genome = "hg38")), error = function(e) NULL)
+great_domains = extendTSS(getGREATDefaultTSS("hg38"), seqlengths = hg38_seqlengths, genome = "hg38", gene_id_type = "ENTREZ",
+                          basal_upstream = 5000, basal_downstream = 1000, extension = 1e6)
+bg_mid = dhs_gr[bg_indices]
+start(bg_mid) = end(bg_mid) = as.integer((start(dhs_gr[bg_indices]) + end(dhs_gr[bg_indices])) / 2)
+bg_ol = findOverlaps(bg_mid, great_domains)
+gene_regions = split(queryHits(bg_ol), as.character(great_domains$gene_id)[subjectHits(bg_ol)])
+# GO terms with genes of descendant terms
+go_tb = AnnotationDbi::select(org.Hs.eg.db, keys = unique(as.character(great_domains$gene_id)), keytype = "ENTREZID", columns = "GOALL")
+go_tb = go_tb[!is.na(go_tb$GOALL), ]
+term_genes = lapply(split(go_tb$ENTREZID, go_tb$GOALL), unique)
+term_ont = setNames(go_tb$ONTOLOGYALL, go_tb$GOALL)
+term_ont = term_ont[!duplicated(names(term_ont))]
+term_name = AnnotationDbi::Term(GO.db::GOTERM[names(term_genes)])
+term_regions = lapply(term_genes, function(g) unique(unlist(gene_regions[intersect(g, names(gene_regions))], use.names = F)))
+term_regions = term_regions[lengths(term_regions) > 0]
+term_genes = term_genes[names(term_regions)]
+# foreground: human elements of significant GH-CO-B pairs
+is_fg = dhs_gr$identifier[bg_indices] %in% readRDS("./output/nonalign_ghcob_motif_shared.rds")$pair_tb$human_id
+n_fg = as.numeric(sum(is_fg))
+n_bg = as.numeric(length(bg_indices))
+n_term = as.numeric(lengths(term_regions))
+n_term_fg = vapply(term_regions, function(r) sum(is_fg[r]), numeric(1))
+fg_genes = names(gene_regions)[vapply(gene_regions, function(r) any(is_fg[r]), logical(1))]
+great_tb = tibble(ID = names(term_regions),
+                  name = unname(term_name[names(term_regions)]),
+                  ontology = unname(term_ont[names(term_regions)]),
+                  Hyper_Total_Regions = n_term,
+                  Hyper_Expected = n_fg * n_term / n_bg,
+                  Hyper_Foreground_Region_Hits = n_term_fg,
+                  Hyper_Fold_Enrichment = n_term_fg / (n_fg * n_term / n_bg),
+                  Hyper_Region_Set_Coverage = n_term_fg / n_fg,
+                  Hyper_Term_Region_Coverage = n_term_fg / n_term,
+                  Hyper_Foreground_Gene_Hits = vapply(term_genes, function(g) sum(g %in% fg_genes), numeric(1)),
+                  Hyper_Background_Gene_Hits = vapply(term_genes, function(g) sum(g %in% names(gene_regions)), numeric(1)),
+                  Total_Genes_Annotated = as.numeric(lengths(term_genes)),
+                  Hyper_Raw_PValue = phyper(n_term_fg - 1, n_term, n_bg - n_term, n_fg, lower.tail = F)) %>%
+        group_by(ontology) %>%
+        mutate(Hyper_Adjp_BH = p.adjust(Hyper_Raw_PValue, "BH")) %>%
+        ungroup() %>%
+        arrange(Hyper_Raw_PValue)
+write_tsv(dplyr::select(filter(great_tb, ontology == "MF"), -ontology), file = "./output/go_final/gh_cob_mf.tsv")
+write_tsv(dplyr::select(filter(great_tb, ontology == "BP"), -ontology), file = "./output/go_final/gh_cob_bp.tsv")
+write_tsv(dplyr::select(filter(great_tb, ontology == "CC"), -ontology), file = "./output/go_final/gh_cob_cc.tsv")

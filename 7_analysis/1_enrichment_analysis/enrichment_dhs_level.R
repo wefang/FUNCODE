@@ -7,6 +7,7 @@ source("./helper/def_color.R")
 
 # load result files
 sign_tb = readRDS("./output/nonalign_sign_combined.rds")
+ghcob = readRDS("./output/nonalign_ghcob_motif_shared.rds")
 regions_all = readRDS("./output/indexed_dhs_mapped_regions_combined.rds")
 print(load("metadata_processed/DHS/human_mouse_dhs_raw.rda"))
 
@@ -17,10 +18,15 @@ human_dhs_tb$sign_type = "non-alignable non-conserved"
 human_dhs_tb$sign_type[human_dhs_tb$id %in% regions_all$human_id] = "Alignable non-conserved"
 human_dhs_tb$sign_type[human_dhs_tb$id %in% unique(sign_tb$human_id)] = "non-alignable CO-V"
 human_dhs_tb$sign_type[human_dhs_tb$id %in% unique(sign_tb$human_id[sign_tb$n_motif_shared >= 1])] = "non-alignable CO-V motif"
+human_dhs_tb$sign_type[human_dhs_tb$id %in% ghcob$human_no_motif_ids] = "non-alignable CO-B"
+human_dhs_tb$sign_type[human_dhs_tb$id %in% ghcob$human_motif_ids] = "non-alignable CO-B motif"
 human_dhs_tb$sign_type[human_dhs_tb$id %in% human_cob_id] = "Alignable CO-B"
 human_dhs_tb$sign_type[human_dhs_tb$id %in% human_cov_id] = "Alignable CO-V"
-human_dhs_tb$sign_type = factor(human_dhs_tb$sign_type,
-                                levels = unique(human_dhs_tb$sign_type)[c(2, 1, 5, 4, 6, 3)])
+sign_type_levels = c("non-alignable non-conserved", "Alignable non-conserved",
+                     "non-alignable CO-V", "non-alignable CO-V motif",
+                     "non-alignable CO-B", "non-alignable CO-B motif",
+                     "Alignable CO-B", "Alignable CO-V")
+human_dhs_tb$sign_type = factor(human_dhs_tb$sign_type, levels = sign_type_levels)
 # Figure 2e: Pie chart breaking down conservation types
 human_dhs_tb %>% count(sign_type) %>%
         mutate(pct = n / sum(n) * 100) %>%
@@ -69,13 +75,14 @@ sign_type_col = c("non-alignable non-conserved" = "#a3a3a3",
 
 sign_tb = readRDS("./output/nonalign_sign_combined.rds")
 mouse_dhs_tb$sign_type = "non-alignable non-conserved"
-mouse_dhs_tb$sign_type[mouse_dhs_tb$id %in% regions_all$mouse_id] = "Alignable non-conserved"
+mouse_dhs_tb$sign_type[mouse_dhs_tb$id %in% paste0("MouseDHS-", regions_all$mouse_id)] = "Alignable non-conserved"
 mouse_dhs_tb$sign_type[mouse_dhs_tb$id %in% unique(sign_tb$mouse_id)] = "non-alignable CO-V"
 mouse_dhs_tb$sign_type[mouse_dhs_tb$id %in% unique(sign_tb$mouse_id[sign_tb$n_motif_shared >= 1])] = "non-alignable CO-V motif"
+mouse_dhs_tb$sign_type[mouse_dhs_tb$id %in% ghcob$mouse_no_motif_ids] = "non-alignable CO-B"
+mouse_dhs_tb$sign_type[mouse_dhs_tb$id %in% ghcob$mouse_motif_ids] = "non-alignable CO-B motif"
 mouse_dhs_tb$sign_type[mouse_dhs_tb$id %in% mouse_cob_id] = "Alignable CO-B"
 mouse_dhs_tb$sign_type[mouse_dhs_tb$id %in% mouse_cov_id] = "Alignable CO-V"
-mouse_dhs_tb$sign_type = factor(mouse_dhs_tb$sign_type,
-                                levels = unique(mouse_dhs_tb$sign_type)[c(1, 2, 4, 5, 3, 6)])
+mouse_dhs_tb$sign_type = factor(mouse_dhs_tb$sign_type, levels = sign_type_levels)
 # pie chart for number of conserved called
 (mouse_dhs_tb %>% count(sign_type) %>%
                 mutate(pct = n / sum(n) * 100) %>%

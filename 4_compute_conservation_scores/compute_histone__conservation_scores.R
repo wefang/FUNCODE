@@ -208,6 +208,26 @@ null_tb$hval_cutoff = map_dbl(1:nrow(null_tb), function(i) {
                 scale_fill_manual(values = c("#868686", "#ffd56b")) + theme(text = element_text(size = 10), legend.position = "none")) %>%
         push_pdf(file_name = paste0("hist_cob_", assay), w = 5., h = 3.)
 
+#### within-species baselines: mean and standardized variance over anchor samples ####
+for (assay in c("H3K27ac", "H3K4me1", "H3K4me3")) {
+        human_histone = readRDS(paste0("./processed_data/histone_norm_correct/Homo_sapiens_", assay, "_norm_correct.rds"))
+        mouse_histone = readRDS(paste0("./processed_data/histone_norm_correct/Mus_musculus_", assay, "_norm_correct.rds"))
+        anchors_baseline = readRDS(paste0(script_output_dir, "anchors_", assay, "_v1.rds"))
+        anchors_baseline = anchors_baseline[anchors_baseline$score > 0.5, ]
+        anchors_baseline = anchors_baseline[anchors_baseline$accession1 %in% colnames(human_histone) &
+                                                    anchors_baseline$accession2 %in% colnames(mouse_histone), ]
+        human_anchor_mat = as.matrix(human_histone[, anchors_baseline$accession1, drop = F])
+        mouse_anchor_mat = as.matrix(mouse_histone[, anchors_baseline$accession2, drop = F])
+        baseline_tb = tibble(id = regions$id,
+                             human_mean = rowMeans(log2(human_anchor_mat + 1)),
+                             human_var_std = calc_var_std_ver1(human_anchor_mat),
+                             mouse_mean = rowMeans(log2(mouse_anchor_mat + 1)),
+                             mouse_var_std = calc_var_std_ver1(mouse_anchor_mat))
+        names(baseline_tb)[-1] = paste0(c("human_", "human_", "mouse_", "mouse_"), assay,
+                                        c("_mean", "_var_std", "_mean", "_var_std"))
+        saveRDS(baseline_tb, paste0(script_output_dir, assay, "_species_baselines.rds"))
+}
+
 
 
 

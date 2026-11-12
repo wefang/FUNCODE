@@ -164,3 +164,17 @@ null_tb$hval_cutoff = map_dbl(1:nrow(null_tb), function(i) {
 save(loci_cor, loci_hval, null_tb,
      spearman_pval, spearman_pval_adj,
      hval_pval, hval_pval_adj, file = paste0(script_output_dir, "scores.rda"))
+
+#### within-species baselines: mean and standardized variance over anchor samples ####
+anchors_baseline = read_tsv("./output/chromatin_conservation/anchors.tsv")
+anchors_baseline = anchors_baseline[anchors_baseline$score > 0.5, ]
+anchors_baseline = anchors_baseline[anchors_baseline$accession1 %in% colnames(human_correct) &
+                                            anchors_baseline$accession2 %in% colnames(mouse_correct), ]
+human_anchor_mat = as.matrix(human_correct[, anchors_baseline$accession1, drop = F])
+mouse_anchor_mat = as.matrix(mouse_correct[, anchors_baseline$accession2, drop = F])
+baseline_tb = tibble(id = regions$id,
+                     human_CA_mean = rowMeans(log2(human_anchor_mat + 1)),
+                     human_CA_var_std = calc_var_std_ver1(human_anchor_mat),
+                     mouse_CA_mean = rowMeans(log2(mouse_anchor_mat + 1)),
+                     mouse_CA_var_std = calc_var_std_ver1(mouse_anchor_mat))
+saveRDS(baseline_tb, paste0(script_output_dir, "CA_species_baselines.rds"))

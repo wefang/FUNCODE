@@ -252,6 +252,24 @@ compute_hval <- function(human_mat, mouse_mat, human_quantile_vec, mouse_quantil
         hval = pmin(human_hval, mouse_hval)
         hval
 }
+#' number of TFBS motifs shared by each human-mouse pair, a motif is present when its row-scaled score > 2
+compute_motif_shared <- function(human_motif, mouse_motif, human_id, mouse_id) {
+        human_ind = match(human_id, rownames(human_motif))
+        mouse_ind = match(mouse_id, rownames(mouse_motif))
+        human_uniq = unique(human_ind)
+        mouse_uniq = unique(mouse_ind)
+        human_bin = t(scale(t(as.matrix(human_motif[human_uniq, , drop = F])))) > 2
+        mouse_bin = t(scale(t(as.matrix(mouse_motif[mouse_uniq, , drop = F])))) > 2
+        human_bin[is.na(human_bin)] = F
+        mouse_bin[is.na(mouse_bin)] = F
+        human_ind = match(human_ind, human_uniq)
+        mouse_ind = match(mouse_ind, mouse_uniq)
+        n_shared = integer(length(human_ind))
+        for (k in 1:ncol(human_bin)) {
+                n_shared = n_shared + (human_bin[human_ind, k] & mouse_bin[mouse_ind, k])
+        }
+        n_shared
+}
 heatmap_wrap <- function(sample_indices) {
         human_mat = t(scale(t(log2(1+human_correct[sample_indices, anchor_tb_sel$accession1]))))
         mouse_mat = t(scale(t(log2(1+mouse_correct[sample_indices, anchor_tb_sel$accession2]))))

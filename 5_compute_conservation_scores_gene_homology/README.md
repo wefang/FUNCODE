@@ -9,5 +9,6 @@ This step computes CO-V scores for candidate human/mouse DHS pairs near homologo
 - 4-1compute_pvalue.R: calculate p-value
 - 4-2compute_fdr_joint.R: combine all 9 categories and calculate FDR
 - 5result_bygene.R: split the results by gene
+- 6compute_cob.R: calculate CO-B scores for human/mouse DHS pairs of one data modality
 - cnsv_score.R: core functions for calculating conservation scores
 
