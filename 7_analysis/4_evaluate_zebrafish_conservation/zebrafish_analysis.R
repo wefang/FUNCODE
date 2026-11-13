@@ -57,15 +57,8 @@ score_col = c("cov_chromatin_accessibility" = "#d73027",
               seq_score_col)
 regions_subset = regions[c("id", all_score_chr)]
 
-# add within-species baselines (human mean and variability, zebrafish variability) and AdaLiftOver scores
+# add within-species baselines (human mean and variability) and AdaLiftOver scores
 baseline_tb = readRDS("./output/chromatin_conservation_v1/CA_species_baselines.rds")
-zf_rpm = readRDS("./output/human_zebrafish/zebrafish_atac_rpm.rds")
-zf_anchors = read_tsv("./output/human_zebrafish/human_zebrafish_anchors.tsv")
-zf_anchors = zf_anchors[zf_anchors$score >= 0.5, ]
-zf_anchor_samples = unique(zf_anchors$zebrafish_sample)
-zf_anchor_mat = as.matrix(zf_rpm[, zf_anchor_samples[zf_anchor_samples %in% colnames(zf_rpm)], drop = F])
-zf_baseline_tb = tibble(id = rownames(zf_anchor_mat),
-                        zebrafish_CA_var_std = calc_var_std_ver1(zf_anchor_mat))
 adaliftover_tb = readRDS("./output/adaliftover/adaliftover_scores.rds")
 regions_combined = readRDS("./output/indexed_dhs_mapped_regions_combined.rds")
 ada_match = match(regions_subset$id, regions_combined$human_id)
@@ -74,11 +67,8 @@ regions_subset$adaliftover_m2h = adaliftover_tb$AdaLiftOver_mm10_to_hg38[ada_mat
 baseline_match = match(regions_subset$id, baseline_tb$id)
 regions_subset$human_CA_mean = baseline_tb$human_CA_mean[baseline_match]
 regions_subset$human_CA_var_std = baseline_tb$human_CA_var_std[baseline_match]
-zf_baseline_match = match(regions_subset$id, zf_baseline_tb$id)
-regions_subset$zebrafish_CA_var_std = zf_baseline_tb$zebrafish_CA_var_std[zf_baseline_match]
 new_score_chr = c("adaliftover_h2m", "adaliftover_m2h",
-                  "human_CA_mean", "human_CA_var_std",
-                  "zebrafish_CA_var_std")
+                  "human_CA_mean", "human_CA_var_std")
 
 
 # compile zebrafish peaks
