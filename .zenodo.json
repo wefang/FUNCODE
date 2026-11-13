@@ -1,7 +1,7 @@
 {
   "title": "FUNCODE: code for quantifying functional conservation of human and mouse regulatory elements",
   "upload_type": "software",
-  "description": "Scripts for computing FUNCODE functional conservation scores (CO-V and CO-B) from ENCODE DNase-seq, ATAC-seq and histone ChIP-seq data, and for the analyses in \"Quantifying Functional Conservation of Human and Mouse Regulatory Elements via FUNCODE\" (Genome Biology, revision).",
+  "description": "Scripts for computing FUNCODE functional conservation scores (CO-V and CO-B) from ENCODE DNase-seq, ATAC-seq and histone ChIP-seq data, and for the analyses in \"Quantifying Functional Conservation of Human and Mouse Regulatory Elements via FUNCODE\".",
   "creators": [
     {"name": "Fang, Weixiang", "affiliation": "Johns Hopkins University"},
     {"name": "Chen, Chaoran", "affiliation": "Johns Hopkins University"},
